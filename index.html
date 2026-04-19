@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CREATETO Has Gone Too Far, The Zale Skolnik Situation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c12;
+      --bg-2: #0e1621;
+      --panel: rgba(15, 23, 35, 0.84);
+      --panel-2: rgba(19, 29, 45, 0.94);
+      --line: rgba(255,255,255,0.08);
+      --text: #edf2fb;
+      --muted: #9fb1cb;
+      --gold: #e7bf72;
+      --red: #ff6b6b;
+      --blue: #74b4ff;
+      --green: #59e1a8;
+      --shadow: 0 28px 80px rgba(0,0,0,0.35);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(116,180,255,0.11), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(231,191,114,0.09), transparent 28%),
+        linear-gradient(180deg, #070b11 0%, #0b121b 36%, #060a10 100%);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.75), transparent 80%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(6,10,16,0.98), rgba(7,11,18,0.98));
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .splash-card {
+      max-width: 780px;
+      border: 1px solid rgba(231,191,114,0.25);
+      border-radius: 32px;
+      padding: 3rem;
+      background: linear-gradient(180deg, rgba(16,24,36,0.95), rgba(9,14,21,0.96));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .splash-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(231,191,114,0.08), transparent 44%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.76rem;
+      margin-bottom: 1rem;
+    }
+    .splash h1,
+    h2,
+    h3.titleish {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .splash h1 {
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 0.95;
+      margin-bottom: 1rem;
+    }
+    .splash p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 1.04rem;
+      max-width: 620px;
+      margin: 0 auto 2rem;
+    }
+    .enter-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #111;
+      background: linear-gradient(135deg, var(--gold), #f4d9a2);
+      box-shadow: 0 10px 30px rgba(231,191,114,0.24);
+    }
+    .topbar {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1200px, calc(100% - 2rem));
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      border-radius: 999px;
+      background: rgba(8,12,18,0.72);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .topbar.visible { opacity: 1; }
+    .topbar-left, .topbar-right { display: flex; align-items: center; gap: 0.8rem; }
+    .seal {
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 1px solid rgba(231,191,114,0.4);
+      background: radial-gradient(circle at 30% 30%, rgba(231,191,114,0.35), rgba(255,255,255,0.02));
+      cursor: pointer;
+      box-shadow: inset 0 0 16px rgba(231,191,114,0.16);
+    }
+    .top-title { font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .chip {
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(89,225,168,0.18);
+      color: var(--green);
+      background: rgba(89,225,168,0.08);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .main { position: relative; z-index: 1; }
+    .hero {
+      width: min(1200px, calc(100% - 2rem));
+      margin: 0 auto;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 3rem;
+      padding: 8rem 0 3rem;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 8vw, 6.2rem);
+      line-height: 0.92;
+      margin-bottom: 1rem;
+      max-width: 10ch;
+    }
+    .lead { color: var(--muted); line-height: 1.85; max-width: 640px; margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .fact-row, .mini-grid, .scoreboard, .quote-grid, .grid-2, .grid-3, .timeline, .verdict-grid {
+      display: grid;
+      gap: 1rem;
+    }
+    .fact-row { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 1.5rem; }
+    .fact {
+      padding: 0.8rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: #dce7fa;
+      font-size: 0.86rem;
+      text-align: center;
+    }
+    .mini-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .panel, .mini, .metric, .quote, .timeline-card {
+      background: linear-gradient(180deg, rgba(17,26,39,0.86), rgba(10,16,24,0.95));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .mini, .metric, .panel, .quote, .timeline-card { padding: 1.2rem; }
+    .mini .big, .metric .big {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--gold);
+      font-size: 2.3rem;
+      line-height: 1;
+      font-weight: 700;
+    }
+    .mini .cap, .metric .cap { margin-top: 0.35rem; color: var(--muted); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .hero-image { width: 100%; border-radius: 30px; display: block; border: 1px solid rgba(255,255,255,0.08); box-shadow: var(--shadow); }
+    .image-note {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    section.block {
+      width: min(1200px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 4rem;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 1.4rem;
+    }
+    .section-head h2 { font-size: clamp(2rem, 4vw, 3.3rem); line-height: 1; }
+    .section-head p { max-width: 560px; color: var(--muted); line-height: 1.8; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3, .scoreboard, .quote-grid, .verdict-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .scoreboard { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .panel h3, .quote h3 { color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.84rem; margin-bottom: 0.8rem; }
+    .panel p, .panel li, .quote p, .timeline-card p { color: var(--muted); line-height: 1.8; }
+    .list { list-style: none; display: grid; gap: 0.8rem; }
+    .list li { position: relative; padding-left: 1rem; }
+    .list li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.7rem;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold);
+    }
+    .meter { display: grid; gap: 0.95rem; }
+    .meter-row { display: grid; grid-template-columns: 170px 1fr auto; gap: 0.8rem; align-items: center; }
+    .bar { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.05); overflow: hidden; }
+    .bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), var(--gold)); }
+    .control-stack { display: grid; gap: 1rem; }
+    .control {
+      padding: 1rem;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .control label { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.55rem; font-size: 0.92rem; font-weight: 700; }
+    input[type="range"] { width: 100%; accent-color: var(--gold); }
+    .tower-index {
+      display: grid; place-items: center; text-align: center; min-height: 100%;
+    }
+    .ring {
+      width: 230px; height: 230px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: conic-gradient(var(--gold) 0deg, var(--blue) 250deg, rgba(255,255,255,0.08) 250deg 360deg);
+      position: relative;
+      box-shadow: inset 0 0 60px rgba(7,12,18,0.7), 0 20px 60px rgba(0,0,0,0.35);
+      margin-bottom: 1rem;
+    }
+    .ring::after {
+      content: ''; position: absolute; width: 154px; height: 154px; border-radius: 50%;
+      background: #0a121b; border: 1px solid rgba(255,255,255,0.08);
+    }
+    .ring-inner { position: relative; z-index: 1; }
+    .ring-inner strong {
+      display: block; font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 3.2rem; line-height: 1;
+    }
+    .ring-inner span { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .speech {
+      min-height: 200px; display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;
+    }
+    .speech-line {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      line-height: 1.28;
+      color: #f8fbff;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+    .btn {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .quote { min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; }
+    .quote small { color: var(--muted); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em; }
+    .timeline-card { display: grid; grid-template-columns: 140px 1fr; gap: 1rem; }
+    .timeline-time {
+      font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 1.9rem; font-weight: 700;
+    }
+    .footer {
+      width: min(1200px, calc(100% - 2rem)); margin: 0 auto; padding: 1rem 0 5rem; text-align: center; color: var(--muted);
+    }
+    .toast {
+      position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 1000;
+      background: rgba(9,14,20,0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
+      padding: 0.9rem 1rem; box-shadow: var(--shadow); max-width: 320px; opacity: 0; transform: translateY(18px); transition: 0.25s ease;
+    }
+    .toast.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 980px) {
+      .hero, .grid-2, .quote-grid, .verdict-grid { grid-template-columns: 1fr; }
+      .fact-row, .mini-grid, .scoreboard, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .topbar-right { display: none; }
+      .fact-row, .mini-grid, .scoreboard, .grid-3, .quote-grid, .verdict-grid { grid-template-columns: 1fr; }
+      .timeline-card, .meter-row { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; align-items: start; }
+      .splash-card { padding: 2rem 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash">
+    <div class="splash-card">
+      <div class="eyebrow">Greater Toronto Development Oversight Alert</div>
+      <h1>Authorities can no longer ignore the Zale Skolnik situation.</h1>
+      <p>
+        Following repeated sightings of impossible competence across Bay Street, real estate transactions, and Toronto development discourse,
+        officials have opened a formal review into whether one man has become too effective at understanding towers, paper, leverage, and vibes.
+      </p>
+      <button class="enter-btn" id="enterBtn">Open the file</button>
+    </div>
+  </div>
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-left">
+      <button class="seal" id="seal"></button>
+      <div class="top-title">The Zale Skolnik Development Event</div>
+    </div>
+    <div class="topbar-right">
+      <div class="chip">Status: overqualified</div>
+      <div class="chip">Region: Toronto tower belt</div>
+    </div>
+  </div>
+
+  <main class="main">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Emergency civic bulletin</div>
+        <h1>A young legal counsel has somehow become a skyline level myth.</h1>
+        <p class="lead">
+          Zale Skolnik appears, on paper, to be a serious Toronto real estate lawyer with Fengate credentials, prior Aird and Berlis seasoning,
+          Western and Queen's academic calibration, and an Ontario call from 2015. Unfortunately for the city, the vibe is much stranger.
+          He now carries the unmistakable energy of a man who could close a joint venture, draft a financing structure, and gently explain the future of purpose built rental before your coffee cools.
+        </p>
+        <div class="fact-row">
+          <div class="fact">Fengate real estate counsel</div>
+          <div class="fact">Queen's Law survivor</div>
+          <div class="fact">Toronto tower interpreter</div>
+          <div class="fact">Bar called, city alarmed</div>
+        </div>
+        <div class="mini-grid">
+          <div class="mini"><div class="big">2015</div><div class="cap">Ontario bar entry</div></div>
+          <div class="mini"><div class="big">181</div><div class="cap">Bay Street aura level</div></div>
+          <div class="mini"><div class="big">1</div><div class="cap">person most likely to out negotiate zoning itself</div></div>
+        </div>
+      </div>
+      <div>
+        <img class="hero-image" src="hero.jpg" alt="Epic cinematic rendering of Zale Skolnik as a Toronto real estate deal wizard">
+        <div class="image-note">
+          Forensic rendering of the exact moment a normal real estate lawyer passes beyond ordinary professionalism and becomes a downtown weather system.
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Primary findings</div>
+          <h2>Why Toronto began whispering</h2>
+        </div>
+        <p>
+          The publicly available biography is already suspiciously polished. But the real issue is how neatly the facts combine into a character who feels less like a person and more like a very elegant legal instrument for getting major things built.
+        </p>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Documented indicators</h3>
+          <ul class="list">
+            <li>Senior legal counsel for Fengate's real estate group, advising on acquisitions, dispositions, financings, joint ventures, investment funds, and general corporate matters.</li>
+            <li>Previously spent years in private practice as a commercial real estate lawyer, including Aird and Berlis, which is Toronto for "this man has seen some paper."</li>
+            <li>Also worked at a global legal technology company, meaning he did not merely learn law, he appears to have attempted to optimize the species.</li>
+            <li>Published commentary on Toronto's renewed interest in purpose built rental, because naturally even his bylines sound like municipal briefing notes from the future.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Measured operating traits</h3>
+          <div class="meter">
+            <div class="meter-row"><span>Bay Street composure</span><div class="bar"><span style="width:98%"></span></div><strong>98%</strong></div>
+            <div class="meter-row"><span>Deal document stamina</span><div class="bar"><span style="width:96%"></span></div><strong>96%</strong></div>
+            <div class="meter-row"><span>Skyline intuition</span><div class="bar"><span style="width:97%"></span></div><strong>97%</strong></div>
+            <div class="meter-row"><span>JV calmness under pressure</span><div class="bar"><span style="width:99%"></span></div><strong>99%</strong></div>
+            <div class="meter-row"><span>Toronto seriousness density</span><div class="bar"><span style="width:100%"></span></div><strong>100%</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Public dashboard</div>
+          <h2>Current reading of the Skolnik index</h2>
+        </div>
+        <p>
+          Analysts have attempted to compare Zale to ordinary ambitious Toronto professionals. This has not gone well. The following scoreboard represents the most stable reading we have.
+        </p>
+      </div>
+      <div class="scoreboard">
+        <div class="metric"><div class="big">1st</div><div class="cap">in hypothetical tower law league</div></div>
+        <div class="metric"><div class="big">4</div><div class="cap">condo developers seen nodding gravely</div></div>
+        <div class="metric"><div class="big">87%</div><div class="cap">chance he already understood the issue</div></div>
+        <div class="metric"><div class="big">∞</div><div class="cap">pages of paper spiritually reviewed</div></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Interactive regulator</div>
+          <h2>Adjust the Toronto deal engine</h2>
+        </div>
+        <p>
+          Move the sliders and observe how quickly the model concludes that Zale is no longer merely a lawyer, but an urban planning folklore event.
+        </p>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Tower calibration controls</h3>
+          <div class="control-stack">
+            <div class="control">
+              <label for="complexity"><span>Transaction complexity</span><strong id="complexityValue">84</strong></label>
+              <input type="range" id="complexity" min="20" max="100" value="84">
+            </div>
+            <div class="control">
+              <label for="toronto"><span>Toronto intensity</span><strong id="torontoValue">91</strong></label>
+              <input type="range" id="toronto" min="20" max="100" value="91">
+            </div>
+            <div class="control">
+              <label for="paper"><span>Pages of legal paper aura</span><strong id="paperValue">88</strong></label>
+              <input type="range" id="paper" min="20" max="100" value="88">
+            </div>
+          </div>
+        </div>
+        <div class="panel tower-index">
+          <div class="ring" id="ring">
+            <div class="ring-inner">
+              <strong id="ringScore">97</strong>
+              <span>tower law index</span>
+            </div>
+          </div>
+          <p id="ringCopy" style="max-width:360px;color:var(--muted);line-height:1.8;">Current setting suggests Zale could review the transaction, improve the transaction, and somehow also explain the transaction better than the transaction understands itself.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Speech lab</div>
+          <h2>Official Zale quote generator</h2>
+        </div>
+        <p>
+          The city has never recorded his actual private one liners. Nevertheless, our simulation has achieved disturbing levels of plausibility.
+        </p>
+      </div>
+      <div class="grid-2">
+        <div class="panel speech">
+          <div class="speech-line" id="speechLine">"The issue is not whether it can be done. The issue is whether everyone else is ready to stop making it harder than necessary."</div>
+          <div class="btn-row">
+            <button class="btn" id="nextQuote">Generate another statement</button>
+            <button class="btn" id="towerMode">Activate Toronto development mode</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Why it lands</h3>
+          <ul class="list">
+            <li>Technically sharp enough to unsettle the room.</li>
+            <li>Calm enough to imply he has already read the next three obstacles.</li>
+            <li>Specific enough to make everyone pretend they were also thinking that.</li>
+            <li>Toronto enough to sound like both a legal memo and a subtle challenge.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Witness testimony</div>
+          <h2>What the city would probably say</h2>
+        </div>
+        <p>
+          The following statements are dramatized. Their emotional accuracy, however, remains uncomfortably high.
+        </p>
+      </div>
+      <div class="quote-grid">
+        <div class="quote">
+          <p>"He has the energy of someone who could close the transaction and then politely explain to Toronto why Toronto was being difficult."</p>
+          <small>Unnamed development professional, looking into the middle distance</small>
+        </div>
+        <div class="quote">
+          <p>"I brought a question. He appeared to bring the entire answer architecture."</p>
+          <small>Associate, still processing the meeting</small>
+        </div>
+        <div class="quote">
+          <p>"Some people work in real estate law. Zale seems to operate one layer above that, where cities become flowcharts."</p>
+          <small>Concerned but impressed Toronto observer</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Operational timeline</div>
+          <h2>A normal day, allegedly</h2>
+        </div>
+        <p>
+          Whether this exact sequence is literal is not important. Spiritually, everyone on Bay Street knows it is true.
+        </p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-card"><div class="timeline-time">7:02 AM</div><div><h3 class="titleish">Toronto scan initiated.</h3><p>Skyline reviewed. Market tone sensed. Three moving pieces identified before most people have located coffee.</p></div></div>
+        <div class="timeline-card"><div class="timeline-time">9:18 AM</div><div><h3 class="titleish">Paper enters orbit.</h3><p>Acquisition structure examined with the calm expression of a man who has absolutely seen worse and probably made it better.</p></div></div>
+        <div class="timeline-card"><div class="timeline-time">1:26 PM</div><div><h3 class="titleish">Joint venture stabilized.</h3><p>Multiple parties continue speaking. Somehow, against the odds, the thing begins to sound coherent.</p></div></div>
+        <div class="timeline-card"><div class="timeline-time">4:44 PM</div><div><h3 class="titleish">Tower future lightly adjusted.</h3><p>An ordinary conversation becomes a quietly decisive one. Somewhere, a map of Toronto exhales.</p></div></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Final ruling</div>
+          <h2>The city has seen enough</h2>
+        </div>
+        <p>
+          After extensive analysis, the panel concludes that Zale Skolnik should be classified not merely as a Toronto real estate lawyer, but as a premium urban development phenomenon,
+          one of those rare people whose resume reads reasonable while their overall effect on a room feels almost infrastructural.
+        </p>
+      </div>
+      <div class="verdict-grid">
+        <div class="panel"><h3>Classification</h3><p>Tier one Toronto operator, legally precise, development fluent, impossible to dismiss once the facts are assembled.</p></div>
+        <div class="panel"><h3>Threat level</h3><p>High, especially for underprepared counterparties and anyone still using the phrase "we will figure it out later".</p></div>
+        <div class="panel"><h3>Civic recommendation</h3><p>Permit him to continue. Maybe also preserve a tasteful portion of the skyline in his honour.</p></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Prepared with deep respect for <strong>Zale Skolnik, Toronto development event</strong>.<br>
+      If this page causes a group chat to say "this is insane," then it is functioning correctly.
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const splash = document.getElementById('splash');
+    const topbar = document.getElementById('topbar');
+    document.getElementById('enterBtn').addEventListener('click', () => {
+      splash.classList.add('hidden');
+      topbar.classList.add('visible');
+    });
+
+    const toast = document.getElementById('toast');
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('visible'), 2200);
+    }
+
+    const complexity = document.getElementById('complexity');
+    const toronto = document.getElementById('toronto');
+    const paper = document.getElementById('paper');
+    const complexityValue = document.getElementById('complexityValue');
+    const torontoValue = document.getElementById('torontoValue');
+    const paperValue = document.getElementById('paperValue');
+    const ringScore = document.getElementById('ringScore');
+    const ringCopy = document.getElementById('ringCopy');
+    const ring = document.getElementById('ring');
+
+    function updateIndex() {
+      const a = Number(complexity.value);
+      const b = Number(toronto.value);
+      const c = Number(paper.value);
+      complexityValue.textContent = a;
+      torontoValue.textContent = b;
+      paperValue.textContent = c;
+      let score = Math.round(a * 0.31 + b * 0.34 + c * 0.35 + 8);
+      score = Math.max(65, Math.min(100, score));
+      ringScore.textContent = score;
+      const deg = score * 3.6;
+      ring.style.background = `conic-gradient(var(--gold) 0deg, var(--blue) ${deg}deg, rgba(255,255,255,0.08) ${deg}deg 360deg)`;
+      if (score >= 97) {
+        ringCopy.textContent = 'Current setting suggests Zale could review the transaction, improve the transaction, and somehow also explain the transaction better than the transaction understands itself.';
+      } else if (score >= 90) {
+        ringCopy.textContent = 'The system still flags elite performance. Bay Street remains uneasy but respectful.';
+      } else {
+        ringCopy.textContent = 'Still highly dangerous in a boardroom. Additional Toronto seriousness would push conditions back into myth territory.';
+      }
+    }
+    [complexity, toronto, paper].forEach(el => el.addEventListener('input', updateIndex));
+    updateIndex();
+
+    const quotes = [
+      '"The issue is not whether it can be done. The issue is whether everyone else is ready to stop making it harder than necessary."',
+      '"I am not saying the structure is elegant. I am saying it could be, if we behaved."',
+      '"Toronto does not need less ambition. It needs fewer badly organized versions of ambition."',
+      '"There are many moving parts here. Fortunately, some of us enjoy that sort of thing."'
+    ];
+    let qi = 0;
+    const speechLine = document.getElementById('speechLine');
+    document.getElementById('nextQuote').addEventListener('click', () => {
+      qi = (qi + 1) % quotes.length;
+      speechLine.textContent = quotes[qi];
+      showToast('Fresh Skolnik transmission generated.');
+    });
+    document.getElementById('towerMode').addEventListener('click', () => {
+      speechLine.textContent = '"At a certain point it is no longer a development issue. It is a coordination issue wearing a blazer."';
+      showToast('Toronto development mode activated.');
+    });
+
+    let sealClicks = 0;
+    document.getElementById('seal').addEventListener('click', () => {
+      sealClicks += 1;
+      if (sealClicks === 5) {
+        showToast('Hidden approval unlocked. The city reluctantly admits he is excellent.');
+        sealClicks = 0;
+      }
+    });
+
+    const code = [];
+    const target = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    window.addEventListener('keydown', e => {
+      code.push(e.key);
+      if (code.length > target.length) code.shift();
+      if (target.every((k, i) => code[i] === k)) {
+        document.body.style.background = 'linear-gradient(180deg, #0a1020 0%, #15101f 40%, #0a1018 100%)';
+        showToast('Impossible zoning optimism mode enabled.');
+      }
+    });
+
+    console.log('CREATETO has gone too far.');
+    console.log('If you are reading this, you are now part of the skyline review committee.');
+  </script>
+</body>
+</html>
